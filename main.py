@@ -10,29 +10,24 @@ from PySide2.QtCore import Qt, QAbstractListModel, QModelIndex
 Class for each issue raised in the board
 '''
 class Todo():
-    def __init__(self, width=100, height=70, color=QColor('blue')):
-        self._width = width
-        self._height = height
+    def __init__(self, color=QColor('blue'), text="Default"):
         self._color = color
-
-    def get_width(self):
-        return self._width
-
-    def get_height(self):
-        return self._height
+        self._text = text
 
     def get_color(self):
         return self._color
 
+    def get_text(self):
+        return self._text
+
 class BoardColumn(QAbstractListModel):
 
-    WidthRole = Qt.UserRole + 1
-    HeightRole = Qt.UserRole + 2
-    ColorRole = Qt.UserRole + 3
+    ColorRole = Qt.UserRole + 1
+    TextRole = Qt.UserRole + 2
 
     # allows QAbstractListModel to know which functions to call to
     # access issue attributes
-    _roles = {WidthRole: b"get_width", HeightRole: b"get_height", ColorRole: b"get_color"}
+    _roles = {ColorRole: b"get_color", TextRole: b"get_text"}
 
     def __init__(self, parent=None):
         QAbstractListModel.__init__(self, parent)
@@ -52,12 +47,10 @@ class BoardColumn(QAbstractListModel):
         except IndexError:
             return QVariant()
 
-        if role == self.WidthRole:
-            return data.get_width()
-        if role == self.HeightRole:
-            return data.get_height()
         if role == self.ColorRole:
             return data.get_color()
+        if role == self.TextRole:
+            return data.get_text()
 
         return QVariant()
 
@@ -70,18 +63,22 @@ if __name__ == '__main__':
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
-    board_col1 = BoardColumn()
-    board_col1.addData(Todo(100, 70, QColor('lightblue')))
-    board_col1.addData(Todo(120, 70, QColor('lightgreen')))
-    board_col1.addData(Todo(80, 70, QColor('lightblue')))
-    board_col1.addData(Todo(50, 70, QColor('lightgreen')))
-    board_col1.addData(Todo(100, 70, QColor('lightblue')))
-    board_col1.addData(Todo(120, 70, QColor('lightgreen')))
-    board_col1.addData(Todo(130, 70, QColor('lightblue')))
-    board_col1.addData(Todo(180, 70, QColor('lightgreen')))
+    board_col_todo = BoardColumn()
+    board_col_towork = BoardColumn()
+    board_col_done = BoardColumn()
+
+    board_col_todo.addData(Todo(QColor('lightblue'), "Work"))
+    board_col_todo.addData(Todo(QColor('lightgreen'), "Clean"))
+
+    board_col_towork.addData(Todo(QColor('lightgreen'), "Fix"))
+    board_col_towork.addData(Todo(QColor('steelblue'), "Poo"))
+
+    board_col_done.addData(Todo(QColor('steelblue'), "Swim"))
 
     root_context = engine.rootContext()
-    root_context.setContextProperty('board_col1', board_col1)
+    root_context.setContextProperty('board_col_todo', board_col_todo)
+    root_context.setContextProperty('board_col_towork', board_col_towork)
+    root_context.setContextProperty('board_col_done', board_col_done)
 
     engine.load("PyTodo.qml")
 

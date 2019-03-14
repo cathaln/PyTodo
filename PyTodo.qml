@@ -5,10 +5,9 @@ ApplicationWindow {
 
     id: window
 
-    width: 640
-    height: 480
+    minimumWidth: 640
+    minimumHeight: 480
     visible: true
-    title: "Hello Python World!"
 
     header: ToolBar {
         contentHeight: toolButton.implicitHeight
