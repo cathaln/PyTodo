@@ -5,8 +5,8 @@ ApplicationWindow {
 
     id: window
 
-    minimumWidth: 640
-    minimumHeight: 480
+    minimumWidth: 800
+    minimumHeight: 550
     visible: true
 
     header: ToolBar {
