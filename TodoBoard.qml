@@ -4,37 +4,52 @@ import QtQuick.Controls 2.5
 Page {
 
     id: root
-    title: qsTr("PyTodo")
 
-    Column {
+    GridView {
+        id: todo_board
 
-        spacing: 20
-        anchors.horizontalCenter: parent.horizontalCenter
-        padding: 50
+        anchors.centerIn: parent
+        width: window.width * 0.9
+        height: window.height * 0.8
 
-        TextField {
-            id: todo_header
+        cellHeight: 170
+        cellWidth: 170
 
-            width: 200
+        delegate: Item {
+            Column {
+                Rectangle {
+                    width: 150
+                    height: 150
+                    color: colorCode
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    radius: 5
 
-            placeholderText: "Title"
+                    Text {
+                        text: name
+                        anchors.centerIn: parent
+                        font.bold: true
+                        color: '#ffffff'
+                    }
+                }
+
+
+            }
         }
+        model: ListModel {
+            ListElement {
+                name: "Groceries"
+                colorCode: "#607D8B"
+            }
 
-        ScrollView {
-            width: window.width * 0.85
-            height: window.height/2
-            clip: true
-
-            TextArea {
-                id: todo_body
-                font.pointSize: 14
-                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                placeholderText: "What has to be done?"
-                text: ""
+            ListElement {
+                name: "Workout"
+                colorCode: "#607D8B"
             }
         }
     }
 }
+
+
 
 /*##^## Designer {
     D{i:0;autoSize:true;height:480;width:640}
