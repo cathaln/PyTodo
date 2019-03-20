@@ -60,6 +60,7 @@ class BoardColumn(QAbstractListModel):
 
 
 if __name__ == '__main__':
+    sys.argv += ['--style', 'material']
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 

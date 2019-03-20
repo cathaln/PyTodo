@@ -26,7 +26,6 @@ Page {
         }
 
         Column {
-
             spacing: 15
 
             PrimaryButton{

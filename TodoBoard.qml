@@ -3,107 +3,40 @@ import QtQuick.Controls 2.5
 
 Page {
 
-    /*
-    Fix so entire board sits in centre of screen (currently has a horizontal scroll).
-    */
-
     id: root
     title: qsTr("PyTodo")
 
-    ScrollView {
-        id: scrollview
-        width: window.width * 0.85
-        height: window.height * 0.8
-        clip: true
+    Column {
 
-        anchors.centerIn: parent
+        spacing: 20
+        anchors.horizontalCenter: parent.horizontalCenter
+        padding: 50
 
-        // to do column
-        Column {
-            width: 80
-            spacing: 5
-            Text {
-                id: todo_col_header
-                text: "To do"
-                padding: 10
-                anchors.horizontalCenter: parent.horizontalCenter
+        TextField {
+            id: todo_header
 
-                color: 'lightgrey'
-            }
-            Repeater {
-                model: board_col_todo
-                delegate: Rectangle {
-                    height: 80
-                    width: parent.width
-                    color: model.get_color
+            width: 200
 
-                    Text {
-                        id: todo_text
-                        text: model.get_text
-
-                        anchors.centerIn: parent
-                    }
-                }
-            }
+            placeholderText: "Title"
         }
 
-        // to work on column
-        Column {
-            width: 80
-            spacing: 5
-            Text {
-                id: towork_col_header
-                text: "To work on"
-                padding: 10
-                anchors.horizontalCenter: parent.horizontalCenter
+        ScrollView {
+            width: window.width * 0.85
+            height: window.height/2
+            clip: true
 
-                color: 'lightgrey'
-            }
-            Repeater {
-                model: board_col_towork
-                delegate: Rectangle {
-                    height: 80
-                    width: parent.width
-                    color: model.get_color
-
-                    Text {
-                        id: towork_text
-                        text: model.get_text
-
-                        anchors.centerIn: parent
-                    }
-                }
-            }
-        }
-
-        // done column
-        Column {
-            width: 80
-            spacing: 5
-            Text {
-                id: done_col_header
-                text: "Done"
-                padding: 10
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                color: 'lightgrey'
-            }
-            Repeater {
-                model: board_col_done
-                delegate: Rectangle {
-                    height: 80
-                    width: parent.width
-                    color: model.get_color
-
-                    Text {
-                        id: done_text
-                        text: model.get_text
-
-                        anchors.centerIn: parent
-                    }
-                }
+            TextArea {
+                id: todo_body
+                font.pointSize: 14
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                placeholderText: "What has to be done?"
+                text: ""
             }
         }
     }
-
 }
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/
