@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import os
+import csv
 from PySide2.QtGui import QGuiApplication, QColor
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtCore import Qt, QAbstractListModel, QModelIndex
@@ -42,6 +44,9 @@ class BoardColumn(QAbstractListModel):
     def __init__(self, parent=None):
         QAbstractListModel.__init__(self, parent)
         self._todos = []
+        for todo in os.listdir(os.getcwd() + '/ToDoTasks'):
+            print(todo)
+            self.addData(Todo(QColor('#607D8B'), todo))
 
     def addData(self, todo):
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
@@ -75,9 +80,6 @@ if __name__ == '__main__':
     engine = QQmlApplicationEngine()
 
     board_todo = BoardColumn()
-
-    board_todo.addData(Todo(QColor('#607D8B'), "Work"))
-    board_todo.addData(Todo(QColor('#607D8B'), "Clean"))
 
     root_context = engine.rootContext()
     root_context.setContextProperty('board_todo', board_todo)
