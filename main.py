@@ -10,7 +10,12 @@ from PySide2.QtCore import Qt, QAbstractListModel, QModelIndex
 Class for each issue raised in the board
 '''
 class Todo():
-    def __init__(self, color=QColor('blue'), text="Default"):
+
+    '''
+    Class for each Todo created.
+    '''
+
+    def __init__(self, color=QColor('#607D8B'), text="Default"):
         self._color = color
         self._text = text
 
@@ -20,7 +25,12 @@ class Todo():
     def get_text(self):
         return self._text
 
+
 class BoardColumn(QAbstractListModel):
+
+    '''
+    Class for the board of todo's.
+    '''
 
     ColorRole = Qt.UserRole + 1
     TextRole = Qt.UserRole + 2
@@ -34,9 +44,9 @@ class BoardColumn(QAbstractListModel):
         self._todos = []
 
     def addData(self, todo):
-            self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
-            self._todos.append(todo)
-            self.endInsertRows()
+        self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
+        self._todos.append(todo)
+        self.endInsertRows()
 
     def rowCount(self, parent=QModelIndex()):
         return len(self._todos)
@@ -64,24 +74,15 @@ if __name__ == '__main__':
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
-    board_col_todo = BoardColumn()
-    board_col_towork = BoardColumn()
-    board_col_done = BoardColumn()
+    board_todo = BoardColumn()
 
-    board_col_todo.addData(Todo(QColor('lightblue'), "Work"))
-    board_col_todo.addData(Todo(QColor('lightgreen'), "Clean"))
-
-    board_col_towork.addData(Todo(QColor('lightgreen'), "Fix"))
-    board_col_towork.addData(Todo(QColor('steelblue'), "Poo"))
-
-    board_col_done.addData(Todo(QColor('steelblue'), "Swim"))
+    board_todo.addData(Todo(QColor('#607D8B'), "Work"))
+    board_todo.addData(Todo(QColor('#607D8B'), "Clean"))
 
     root_context = engine.rootContext()
-    root_context.setContextProperty('board_col_todo', board_col_todo)
-    root_context.setContextProperty('board_col_towork', board_col_towork)
-    root_context.setContextProperty('board_col_done', board_col_done)
+    root_context.setContextProperty('board_todo', board_todo)
 
-    engine.load("PyTodo.qml")
+    engine.load("QML/PyTodo.qml")
 
 
     if not engine.rootObjects():

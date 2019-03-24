@@ -20,12 +20,12 @@ Page {
                 Rectangle {
                     width: 150
                     height: 150
-                    color: colorCode
+                    color: get_color
                     anchors.horizontalCenter: parent.horizontalCenter
                     radius: 5
 
                     Text {
-                        text: name
+                        text: get_text
                         anchors.centerIn: parent
                         font.bold: true
                         color: '#ffffff'
@@ -35,17 +35,8 @@ Page {
 
             }
         }
-        model: ListModel {
-            ListElement {
-                name: "Groceries"
-                colorCode: "#607D8B"
-            }
-
-            ListElement {
-                name: "Workout"
-                colorCode: "#607D8B"
-            }
-        }
+        // set model which has been exported from python
+        model: board_todo
     }
 }
 
