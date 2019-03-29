@@ -30,6 +30,13 @@ Page {
                         font.bold: true
                         color: '#ffffff'
                     }
+
+                    MouseArea {
+
+                        anchors.fill: parent
+                        onClicked: stackView.push('Todo.qml')
+
+                    }
                 }
 
 

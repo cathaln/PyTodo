@@ -13,10 +13,9 @@ Page {
 
         TextField {
             id: todo_header
-
             width: 200
-
             placeholderText: "Title"
+            color: 'orange'
         }
 
         ScrollView {

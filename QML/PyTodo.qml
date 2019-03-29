@@ -11,8 +11,8 @@ ApplicationWindow {
     visible: true
 
     Material.primary: "#607D8B"
-    Material.background: "#B0BEC5"
-    Material.accent: "#ffffff"
+    Material.background: "#ffffff"
+    Material.accent: "orange"
 
     header: ToolBar {
         contentHeight: toolButton.implicitHeight
@@ -57,7 +57,7 @@ ApplicationWindow {
                 Text {
                     text: qsTr("About")
                     width: parent.width
-                    color: '#ffffff'
+                    color: '#607D8B'
                     font.pointSize: 14
                     anchors.verticalCenter: parent.verticalCenter
                     leftPadding: 20

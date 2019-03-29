@@ -45,7 +45,6 @@ class BoardColumn(QAbstractListModel):
         QAbstractListModel.__init__(self, parent)
         self._todos = []
         for todo in os.listdir(os.getcwd() + '/ToDoTasks'):
-            print(todo)
             self.addData(Todo(QColor('#607D8B'), todo))
 
     def addData(self, todo):
