@@ -25,21 +25,18 @@ Page {
                     radius: 5
 
                     Text {
-                        text: get_text
+                        text: get_name
                         anchors.centerIn: parent
                         font.bold: true
                         color: '#ffffff'
                     }
 
                     MouseArea {
-
                         anchors.fill: parent
-                        onClicked: stackView.push('Todo.qml')
+                        onClicked: stackView.push('Todo.qml', {"todo_name": get_name, "todo_desc": get_description})
 
                     }
                 }
-
-
             }
         }
         // set model which has been exported from python

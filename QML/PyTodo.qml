@@ -5,9 +5,12 @@ import QtQuick.Controls.Material 2.12
 ApplicationWindow {
 
     id: window
+    title: 'PyTodo'
 
     minimumWidth: 800
     minimumHeight: 550
+    maximumWidth: 800
+    maximumHeight: 550
     visible: true
 
     Material.primary: "#607D8B"
@@ -21,7 +24,7 @@ ApplicationWindow {
             id: toolButton
             Text {
                 id: name
-                text: stackView.depth > 1 ? "\u25C0" : "\u2630"
+                text: stackView.depth > 1 ? "<" : "\u2630"
                 font.pixelSize: Qt.application.font.pixelSize * 1.6
                 color: '#ffffff'
                 anchors.centerIn: parent

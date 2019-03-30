@@ -3,7 +3,6 @@
 
 import sys
 import os
-import csv
 from PySide2.QtGui import QGuiApplication, QColor
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtCore import Qt, QAbstractListModel, QModelIndex
@@ -17,15 +16,24 @@ class Todo():
     Class for each Todo created.
     '''
 
-    def __init__(self, color=QColor('#607D8B'), text="Default"):
+    def __init__(self, color=QColor('#607D8B'), name="Default"):
         self._color = color
-        self._text = text
+        self._name = name
+        self._description = ''
 
     def get_color(self):
         return self._color
 
-    def get_text(self):
-        return self._text
+    def get_name(self):
+        return self._name
+
+    # needs work
+    def get_description(self):
+        if self._description == '':
+            with open('./ToDoTasks/' + self._name) as filename:
+                self._description = filename.read()
+        return self._description
+
 
 
 class BoardColumn(QAbstractListModel):
@@ -35,11 +43,12 @@ class BoardColumn(QAbstractListModel):
     '''
 
     ColorRole = Qt.UserRole + 1
-    TextRole = Qt.UserRole + 2
+    NameRole = Qt.UserRole + 2
+    DescRole = Qt.UserRole + 3
 
     # allows QAbstractListModel to know which functions to call to
     # access issue attributes
-    _roles = {ColorRole: b"get_color", TextRole: b"get_text"}
+    _roles = {ColorRole: b"get_color", NameRole: b"get_name", DescRole: b"get_description"}
 
     def __init__(self, parent=None):
         QAbstractListModel.__init__(self, parent)
@@ -63,8 +72,10 @@ class BoardColumn(QAbstractListModel):
 
         if role == self.ColorRole:
             return data.get_color()
-        if role == self.TextRole:
-            return data.get_text()
+        if role == self.NameRole:
+            return data.get_name()
+        if role == self.DescRole:
+            return data.get_description()
 
         return QVariant()
 

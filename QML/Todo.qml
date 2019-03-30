@@ -5,6 +5,9 @@ Page {
 
     id: root
 
+    property string todo_name
+    property string todo_desc
+
     Column {
 
         spacing: 20
@@ -16,6 +19,7 @@ Page {
             width: 200
             placeholderText: "Title"
             color: 'orange'
+            text: todo_name
         }
 
         ScrollView {
@@ -28,7 +32,7 @@ Page {
                 font.pointSize: 14
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 placeholderText: "What has to be done?"
-                text: ""
+                text: todo_desc
             }
         }
     }
