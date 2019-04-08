@@ -27,7 +27,6 @@ class Todo():
     def get_name(self):
         return self._name
 
-    # needs work
     def get_description(self):
         if self._description == '':
             with open('./ToDoTasks/' + self._name) as filename:

@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import 'Widgets'
 
 Page {
 
@@ -14,15 +15,20 @@ Page {
         anchors.horizontalCenter: parent.horizontalCenter
         padding: 50
 
-        TextField {
-            id: todo_header
-            width: 200
-            placeholderText: "Title"
-            color: 'orange'
-            text: todo_name
+        Row {
+            spacing: 20
+
+            TextField {
+                id: todo_header
+                width: 200
+                placeholderText: "Title"
+                color: 'orange'
+                text: todo_name
+            }
         }
 
         ScrollView {
+            id: todo_scroll
             width: window.width * 0.85
             height: window.height/2
             clip: true
@@ -34,6 +40,15 @@ Page {
                 placeholderText: "What has to be done?"
                 text: todo_desc
             }
+        }
+
+        PrimaryButton {
+            id: save_todo
+            anchors.right: todo_scroll.right
+            setText: "\u2713"
+            setWidth: 40
+            setFontSize: 20
+
         }
     }
 }
