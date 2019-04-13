@@ -5,7 +5,7 @@ import sys
 import os
 from PySide2.QtGui import QGuiApplication, QColor
 from PySide2.QtQml import QQmlApplicationEngine
-from PySide2.QtCore import Qt, QAbstractListModel, QModelIndex
+from PySide2.QtCore import Qt, QAbstractListModel, QModelIndex, Slot
 
 '''
 Class for each issue raised in the board
@@ -80,6 +80,13 @@ class BoardColumn(QAbstractListModel):
 
     def roleNames(self):
         return self._roles
+
+    @Slot(str, str)
+    def update_todo(self, head_txt, body_txt):
+        with open('ToDoTasks/' + head_txt, 'w', newline='') as todo:
+            todo.write(body_txt)
+            todo.close()
+
 
 
 

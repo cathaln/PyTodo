@@ -49,6 +49,13 @@ Page {
             setWidth: 40
             setFontSize: 20
 
+            onClicked: {
+
+                board_todo.update_todo(todo_header.text, todo_body.text)
+                stackView.pop()
+
+            }
+
         }
     }
 }
