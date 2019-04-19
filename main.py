@@ -38,7 +38,7 @@ class Todo():
 class BoardColumn(QAbstractListModel):
 
     '''
-    Class for the board of todo's.
+    Class for the board of todo's. Contains interaction with each Todo object created.
     '''
 
     ColorRole = Qt.UserRole + 1
@@ -50,20 +50,59 @@ class BoardColumn(QAbstractListModel):
     _roles = {ColorRole: b"get_color", NameRole: b"get_name", DescRole: b"get_description"}
 
     def __init__(self, parent=None):
+
+        '''
+        Initialisation of board. Creates todo list as well as populates it.
+        '''
+
         QAbstractListModel.__init__(self, parent)
         self._todos = []
+        self.refresh_todos_list()
+
+    def refresh_todos_list(self):
+
+        '''
+        Refreshes the list of todos on the board. Called whenever a todo is updated, added, or deleted,
+        '''
+
+        self.clearData()
         for todo in os.listdir(os.getcwd() + '/ToDoTasks'):
             self.addData(Todo(QColor('#607D8B'), todo))
 
     def addData(self, todo):
+
+        '''
+        Adding a todo to the board.
+        '''
+
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self._todos.append(todo)
         self.endInsertRows()
 
+    def clearData(self):
+
+        '''
+        Clears the list containing the todos. Used as oart of the refresh.
+        '''
+
+        self.beginRemoveRows(QModelIndex(), 0, self.rowCount())
+        self._todos.clear()
+        self.endRemoveRows()
+
     def rowCount(self, parent=QModelIndex()):
+
+        '''
+        A getter for the list length.
+        '''
+
         return len(self._todos)
 
     def data(self, index, role=Qt.DisplayRole):
+
+        '''
+        Used to allow QAbstractListModel to identify data.
+        '''
+
         try:
             data = self._todos[index.row()]
         except IndexError:
@@ -79,13 +118,24 @@ class BoardColumn(QAbstractListModel):
         return QVariant()
 
     def roleNames(self):
+
+        '''
+        Getter for role names
+        '''
+
         return self._roles
 
     @Slot(str, str)
     def update_todo(self, head_txt, body_txt):
+
+        '''
+        A slot method for updating an existing todo.
+        '''
+
         with open('ToDoTasks/' + head_txt, 'w', newline='') as todo:
             todo.write(body_txt)
             todo.close()
+            self.refresh_todos_list()
 
 
 
