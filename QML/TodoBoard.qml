@@ -36,6 +36,36 @@ Page {
                         onClicked: stackView.push('Todo.qml', {"todo_name": get_name, "todo_desc": get_description})
 
                     }
+
+                    Button {
+
+                        height: 20
+                        width: 20
+
+                        anchors.top: parent.top
+                        anchors.topMargin: 5
+                        anchors.right: parent.right
+                        anchors.rightMargin: 5
+
+                        background: Rectangle {
+
+                            anchors.fill: parent
+
+                            radius: 20
+                            color: get_color
+
+                            Text {
+                                text: "-"
+                                color: "white"
+                                font.pointSize: 20
+                                anchors.centerIn: parent
+                                anchors.verticalCenterOffset: -2
+                            }
+                        }
+                        onClicked: {
+                            board_todo.removeData(get_name)
+                        }
+                    }
                 }
             }
         }

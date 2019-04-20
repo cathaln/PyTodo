@@ -79,6 +79,17 @@ class BoardColumn(QAbstractListModel):
         self._todos.append(todo)
         self.endInsertRows()
 
+    @Slot(str)
+    def removeData(self, todo):
+
+        '''
+        Delete a selected todo from the todo board.
+        '''
+
+        os.remove(os.getcwd() + '/ToDoTasks/' + todo)
+        self.refresh_todos_list()
+
+
     def clearData(self):
 
         '''
