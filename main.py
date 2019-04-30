@@ -3,7 +3,7 @@
 
 import sys
 import os
-from PySide2.QtGui import QGuiApplication, QColor
+from PySide2.QtGui import QGuiApplication, QColor, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtCore import Qt, QAbstractListModel, QModelIndex, Slot
 
@@ -154,6 +154,7 @@ class BoardColumn(QAbstractListModel):
 if __name__ == '__main__':
     sys.argv += ['--style', 'material']
     app = QGuiApplication(sys.argv)
+    app.setWindowIcon(QIcon('bluetick.png'))
     engine = QQmlApplicationEngine()
 
     board_todo = BoardColumn()
