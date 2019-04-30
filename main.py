@@ -3,6 +3,7 @@
 
 import sys
 import os
+import mysql.connector
 from PySide2.QtGui import QGuiApplication, QColor, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtCore import Qt, QAbstractListModel, QModelIndex, Slot
@@ -20,6 +21,8 @@ class Todo():
         self._color = color
         self._name = name
         self._description = ''
+        self.mydb = SQLDatabase.get_db_instance()
+        self.cursor = self.mydb.cursor()
 
     def get_color(self):
         return self._color
@@ -28,9 +31,10 @@ class Todo():
         return self._name
 
     def get_description(self):
+
         if self._description == '':
-            with open('./ToDoTasks/' + self._name) as filename:
-                self._description = filename.read()
+            self.cursor.execute("SELECT description FROM todotasks WHERE name = '" + self._name + "'")
+            self._description = self.cursor.fetchall()[0][0]
         return self._description
 
 
@@ -56,6 +60,10 @@ class BoardColumn(QAbstractListModel):
         '''
 
         QAbstractListModel.__init__(self, parent)
+
+        self.mydb = SQLDatabase.get_db_instance()
+        self.cursor = self.mydb.cursor()
+
         self._todos = []
         self.refresh_todos_list()
 
@@ -66,8 +74,10 @@ class BoardColumn(QAbstractListModel):
         '''
 
         self.clearData()
-        for todo in os.listdir(os.getcwd() + '/ToDoTasks'):
-            self.addData(Todo(QColor('#607D8B'), todo))
+        self.cursor.execute("SELECT name FROM todotasks")
+        todo_names = self.cursor.fetchall()
+        for todo in todo_names:
+            self.addData(Todo(QColor('#607D8B'), str(todo[0])))
 
     def addData(self, todo):
 
@@ -85,8 +95,8 @@ class BoardColumn(QAbstractListModel):
         '''
         Delete a selected todo from the todo board.
         '''
-
-        os.remove(os.getcwd() + '/ToDoTasks/' + todo)
+        self.cursor.execute("DELETE FROM todotasks WHERE name = '" + todo + "'")
+        self.mydb.commit()
         self.refresh_todos_list()
 
 
@@ -140,15 +150,32 @@ class BoardColumn(QAbstractListModel):
     def update_todo(self, head_txt, body_txt):
 
         '''
-        A slot method for updating an existing todo.
+        A slot method for updating an existing todo, adds new if not existing.
         '''
+        self.cursor.execute("SELECT EXISTS(SELECT name FROM todotasks WHERE name = '" + head_txt + "')")
+        pre_existing_entry = self.cursor.fetchall()[0][0]
+        if pre_existing_entry < 1:
+            self.cursor.execute("INSERT INTO todotasks (name, description) VALUES (%s, %s)", (head_txt, body_txt))
+            self.mydb.commit()
+        else:
+            self.cursor.execute("UPDATE todotasks SET description = '" + body_txt + "' WHERE name = '" + head_txt + "'")
+            self.mydb.commit()
 
-        with open('ToDoTasks/' + head_txt, 'w', newline='') as todo:
-            todo.write(body_txt)
-            todo.close()
-            self.refresh_todos_list()
+        self.refresh_todos_list()
 
 
+class SQLDatabase():
+
+    @staticmethod
+    def get_db_instance():
+
+        mydb = mysql.connector.connect(
+          host="localhost",
+          user="root",
+          passwd="todopass",
+          database="PyTodo"
+        )
+        return mydb
 
 
 if __name__ == '__main__':
